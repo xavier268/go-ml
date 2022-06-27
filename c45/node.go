@@ -30,7 +30,7 @@ func (n *node) Select(v float64) Node {
 
 func NewNode(parent Node) Node {
 	n := new(node)
-	n.child = make([]Node, 0, 2)
+	n.child = make([]Node, 0, 2) // anticipate 2 childs max
 	n.parent = parent
 	return n
 }

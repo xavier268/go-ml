@@ -5,14 +5,22 @@ import "fmt"
 var ErrUnknown = fmt.Errorf("unknown value")
 
 type instance struct {
-	data map[int]float64
+	data  map[int]float64
+	class int
 }
 
-func (is *instance) Set(att int, val float64) {
+func (is *instance) SetVal(att int, val float64) {
 	is.data[att] = val
 }
+func (is *instance) SetClass(cl int) {
+	is.class = cl
+}
 
-func (is *instance) Get(att int) (float64, error) {
+func (is *instance) GetClass() int {
+	return is.class
+}
+
+func (is *instance) GetVal(att int) (float64, error) {
 	val, ok := is.data[att]
 	if ok {
 		return val, nil
