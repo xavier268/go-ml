@@ -1,5 +1,7 @@
 package c45
 
+import "math"
+
 type dataset struct {
 	data []Instance
 }
@@ -29,7 +31,7 @@ func NewDataset() Dataset {
 	return ds
 }
 
-func (ds *dataset) Entropy() float64 {
+func (ds *dataset) Entropy() (ent float64) {
 	// TODO sum of p(x)Log(x) for all classes ?
 	n := float64(len(ds.data)) // ttl occurences
 	m := make(map[int]int)     // count occurences per class
@@ -38,8 +40,10 @@ func (ds *dataset) Entropy() float64 {
 		m[c] = m[c] + 1
 	}
 
-	// TODO
-
-	return 0. / n
+	for _, c := range m {
+		x := float64(c) / n
+		ent += x * math.Log2(x)
+	}
+	return -ent
 
 }
