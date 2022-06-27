@@ -21,9 +21,6 @@ func (n *node) GetCriteria() int {
 }
 
 func (n *node) Select(v float64) Node {
-	if n.leaf {
-		panic("cannot select on a leaf")
-	}
 	if v <= n.cut {
 		return n.child[0]
 	} else {
