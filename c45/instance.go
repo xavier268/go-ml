@@ -17,6 +17,10 @@ func (is *instance) GetClass() int {
 	return is.class
 }
 
+func (is *instance) NAtt() int {
+	return len(is.data)
+}
+
 // Will return NaN if not set, not 0.
 func (is *instance) GetVal(att int) float64 {
 	if att >= len(is.data) {
@@ -43,4 +47,24 @@ func NewInstance(class int, values []float64) Instance {
 	is.data = values
 	is.class = class
 	return is
+}
+
+// L2 distance between is and b. Distance is zero for NaN attributes.
+func (is *instance) D2(b Instance) float64 {
+	if b == nil {
+		return 0.
+	}
+	d2 := 0.0
+	for a, v := range is.data {
+		if math.IsNaN(v) {
+			continue
+		}
+		vv := b.GetVal(a)
+		if !math.IsNaN(vv) {
+			continue
+		}
+		vv = v - vv
+		d2 = d2 + vv*vv
+	}
+	return d2
 }

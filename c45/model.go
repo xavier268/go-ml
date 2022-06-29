@@ -17,7 +17,9 @@ type Dataset interface {
 // Instances are immutable, once created.
 type Instance interface {
 	GetVal(att int) float64 // Get attribute, NaN if unknown
-	GetClass() int
+	GetClass() int          // Retrieve class, if available. Default to 0.
+	NAtt() int              // max number of attribute (could be lower)
+	D2(b Instance) float64  //L2 distance
 	fmt.Stringer
 }
 
@@ -33,4 +35,5 @@ type Node interface {
 type Clusterer interface {
 	Kmeans(k int) []Instance
 	Clusterize(centroids []Instance) []Dataset
+	Centroid() Instance
 }

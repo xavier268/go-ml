@@ -9,13 +9,21 @@ import (
 type dataset struct {
 	data      []Instance // Instances are shared as much as possible between dataset. Instances are immutable.
 	selection []int      // which instances are part of the subset, possibly duplicated
+	natt      int
 }
 
 func (ds *dataset) AddInstance(inst Instance) int {
 	id := len(ds.data)
 	ds.selection = append(ds.selection, id)
 	ds.data = append(ds.data, inst)
+	if ds.natt < inst.NAtt() {
+		ds.natt = inst.NAtt()
+	}
 	return id
+}
+
+func (ds *dataset) NAtt() int {
+	return ds.natt
 }
 
 func (ds *dataset) DuplicateInstance(id ...int) {
