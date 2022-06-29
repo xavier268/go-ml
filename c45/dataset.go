@@ -8,7 +8,7 @@ import (
 
 type dataset struct {
 	data      []Instance // Instances are shared as much as possible between dataset. Instances are immutable.
-	selection []int      // Which instances are part of the subset.
+	selection []int      // which instances are part of the subset, possibly duplicated
 }
 
 func (ds *dataset) AddInstance(inst Instance) int {
@@ -83,6 +83,18 @@ func (ds *dataset) Dump(msg ...interface{}) {
 	fmt.Println(msg...)
 	fmt.Println("------------------------------------")
 	fmt.Println(ds)
-	fmt.Printf("data : \n%v\nselection :\n%v\n", ds.data, ds.selection)
+	n, det := ds.countClasses()
+	fmt.Printf("data : \n%v\nselection :\n%v\n class repartition : %v (total : %d) \n", ds.data, ds.selection, det, n)
 	fmt.Println("------------------------------------")
+}
+
+// Retun the total selected instances and a map from class -> nb of instances in class (including duplicates)
+func (ds *dataset) countClasses() (ttl int, detail map[int]int) {
+
+	m := make(map[int]int)
+	for _, s := range ds.selection {
+		c := ds.data[s].GetClass()
+		m[c] = m[c] + 1
+	}
+	return len(ds.selection), m
 }

@@ -6,6 +6,14 @@ import (
 	"testing"
 )
 
+var ti = []*instance{
+	{class: 11, data: []float64{1.}},
+	{class: 22, data: []float64{}},
+	{class: 33, data: []float64{3.3, math.NaN(), 333.}},
+	{class: 44, data: []float64{444}},
+	{class: 55, data: []float64{math.NaN(), 5.55}},
+}
+
 func TestModelVisual(t *testing.T) {
 
 	i := NewInstance(11, []float64{5.2, 4.2, 3.2, 2.2, 1.2, math.NaN(), -22.2, -33.3})
@@ -13,9 +21,9 @@ func TestModelVisual(t *testing.T) {
 
 	d := NewDataset()
 	fmt.Println(d)
-	fmt.Println("Added instance # ", d.AddInstance(i))
-	fmt.Println("Added instance # ", d.AddInstance(NewInstance(22, nil)))
-	fmt.Println("Added instance # ", d.AddInstance(NewInstance(33, []float64{1.2, math.NaN(), -22.2, -math.NaN()})))
+	for _, it := range ti {
+		fmt.Println("Added instance # ", d.AddInstance(it))
+	}
 	fmt.Println(d)
 
 	fmt.Println("Duplicating instances 2 & 1")
@@ -26,7 +34,7 @@ func TestModelVisual(t *testing.T) {
 	s := d.Subset([]int{2, 1, 2})
 	fmt.Println("Subset #2, #1, #2:\n", s)
 
-	d1, d2 := d.Split(func(ist Instance) bool { return ist.GetClass() == 22 })
-	fmt.Println("Splitting on class 22 :\n", d1, d2)
+	d1, d2 := d.Split(func(ist Instance) bool { return ist.GetClass() <= 22 })
+	fmt.Println("Splitting on class <= 22 :\n", d1, d2)
 
 }
