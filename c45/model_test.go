@@ -15,7 +15,6 @@ var ti = []*instance{
 	{class: 55, data: []float64{math.NaN(), 5.55}},
 	{class: 66, data: []float64{math.NaN(), 0.66}},
 	{class: 77, data: []float64{math.NaN(), 7.77}},
-	{class: 88, data: []float64{math.NaN(), 8}},
 }
 
 func TestModelVisual(t *testing.T) {

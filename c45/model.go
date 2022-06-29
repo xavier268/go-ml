@@ -5,12 +5,12 @@ import "fmt"
 type SplitFunc func(inst Instance) bool
 
 type Dataset interface {
-	GetInstance(i int) Instance    // using absolute instance id
-	AddInstance(inst Instance) int // return the absolute instance id
-	DuplicateInstance(id ...int)   // duplicates existing instances using their absolute ids. Only impacts selection.
-	Split(f SplitFunc) (Dataset, Dataset)
-	Entropy() float64
-	Subset([]int) Dataset // select using the absolute instance Ids. Duplicates are allowed.
+	GetInstance(i int) Instance           // using absolute instance id
+	AddInstance(inst Instance) int        // return the absolute instance id
+	DuplicateInstance(id ...int)          // duplicates existing instances using their absolute ids. Only impacts selection.
+	Split(f SplitFunc) (Dataset, Dataset) // split dataset based upon the function result. The fisrt for true, the second for false.
+	Entropy() float64                     // (binary) entropy provides the minimum quantity of information in bits to select a given class.
+	Subset([]int) Dataset                 // select using the absolute instance Ids. Duplicates are allowed.
 	fmt.Stringer
 }
 
