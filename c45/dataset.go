@@ -84,7 +84,7 @@ func (ds *dataset) Dump(msg ...interface{}) {
 	fmt.Println("------------------------------------")
 	fmt.Println(ds)
 	n, det := ds.countClasses()
-	fmt.Printf("data : \n%v\nselection :\n%v\n class repartition : %v (total : %d) \n", ds.data, ds.selection, det, n)
+	fmt.Printf("data : \n%v\nselection :\n%v\nclass repartition :\n%v (total : %d) \n", ds.data, ds.selection, det, n)
 	fmt.Println("------------------------------------")
 }
 

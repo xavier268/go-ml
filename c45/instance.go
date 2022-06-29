@@ -22,10 +22,11 @@ func (is *instance) GetVal(att int) float64 {
 
 func (is *instance) String() string {
 	var sb strings.Builder
-	fmt.Fprintf(&sb, "<%3d>\t", is.class)
+	fmt.Fprintf(&sb, "<%d> (", is.class)
 	for _, v := range is.data {
-		fmt.Fprintf(&sb, "%3.2f ", v)
+		fmt.Fprintf(&sb, " %3.2f;", v)
 	}
+	fmt.Fprint(&sb, " ),")
 	return sb.String()
 }
 
