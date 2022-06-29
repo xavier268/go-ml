@@ -55,7 +55,7 @@ func NewDataset() Dataset {
 func (ds *dataset) String() string {
 	var sb strings.Builder
 	//fmt.Fprintf(&sb, "Dataset contains a selection of %d instances out of %d : %v\n", len(ds.selection), len(ds.data), ds.selection)
-	fmt.Fprintf(&sb, "Dataset contains a selection of %d instances among %d unique instances\n", len(ds.selection), len(ds.data))
+	fmt.Fprintf(&sb, "Dataset contains a selection of %d instances among %d unique instances (entropy : %f)\n", len(ds.selection), len(ds.data), ds.Entropy())
 	for _, i := range ds.selection {
 		fmt.Fprintf(&sb, "#%d:\t%s\n", i, ds.data[i])
 	}
@@ -63,15 +63,11 @@ func (ds *dataset) String() string {
 }
 
 func (ds *dataset) Entropy() (ent float64) {
-	n := float64(len(ds.data)) // ttl occurences
-	m := make(map[int]int)     // count occurences per class
-	for _, d := range ds.data {
-		c := d.GetClass()
-		m[c] = m[c] + 1
-	}
+	n, m := ds.countClasses()
+	fn := float64(n)
 
 	for _, c := range m {
-		x := float64(c) / n
+		x := float64(c) / fn
 		ent += x * math.Log2(x)
 	}
 	return -ent

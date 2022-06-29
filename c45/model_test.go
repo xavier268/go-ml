@@ -7,11 +7,15 @@ import (
 )
 
 var ti = []*instance{
+	{class: 0, data: []float64{0.01}},
 	{class: 11, data: []float64{1.}},
 	{class: 22, data: []float64{}},
 	{class: 33, data: []float64{3.3, math.NaN(), 333.}},
 	{class: 44, data: []float64{444}},
 	{class: 55, data: []float64{math.NaN(), 5.55}},
+	{class: 66, data: []float64{math.NaN(), 0.66}},
+	{class: 77, data: []float64{math.NaN(), 7.77}},
+	{class: 88, data: []float64{math.NaN(), 8}},
 }
 
 func TestModelVisual(t *testing.T) {
@@ -22,7 +26,7 @@ func TestModelVisual(t *testing.T) {
 	d := NewDataset()
 	fmt.Println(d)
 	for _, it := range ti {
-		fmt.Println("Added instance # ", d.AddInstance(it))
+		fmt.Println("Added instance # ", d.AddInstance(it), ", entropy : ", d.Entropy())
 	}
 	fmt.Println(d)
 
