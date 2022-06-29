@@ -1,29 +1,50 @@
 package c45
 
-import "math"
+import (
+	"fmt"
+	"math"
+	"strings"
+)
 
 type dataset struct {
-	data []Instance
+	data      []Instance // Instances are shared as much as possible between dataset. Instances are immutable.
+	selection []int      // Which instances are part of the subset.
 }
 
-func (ds *dataset) AddInstance(inst Instance) {
+func (ds *dataset) AddInstance(inst Instance) int {
+	id := len(ds.data)
+	ds.selection = append(ds.selection, id)
 	ds.data = append(ds.data, inst)
+	return id
+}
+
+func (ds *dataset) DuplicateInstance(id ...int) {
+	ds.selection = append(ds.selection, id...)
 }
 
 func (ds *dataset) GetInstance(i int) Instance {
-	return ds.data[i]
+	return (ds.data)[i]
 }
 
 func (ds *dataset) Split(f SplitFunc) (Dataset, Dataset) {
-	d1, d2 := NewDataset(), NewDataset()
-	for _, d := range ds.data {
-		if f(d) {
-			d1.AddInstance(d)
+	s1, s2 := make([]int, 0, 2+len(ds.selection)/2), make([]int, 0, 2+len(ds.selection)/2)
+	for _, i := range ds.selection {
+		if f(ds.data[i]) {
+			s1 = append(s1, i)
 		} else {
-			d2.AddInstance(d)
+			s2 = append(s2, i)
 		}
 	}
+	d1 := ds.Subset(s1)
+	d2 := ds.Subset(s2)
 	return d1, d2
+}
+
+func (ds *dataset) Subset(idx []int) Dataset {
+	dd := new(dataset)
+	dd.data = ds.data // shared instance
+	dd.selection = idx
+	return dd
 }
 
 func NewDataset() Dataset {
@@ -31,8 +52,17 @@ func NewDataset() Dataset {
 	return ds
 }
 
+func (ds *dataset) String() string {
+	var sb strings.Builder
+	//fmt.Fprintf(&sb, "Dataset contains a selection of %d instances out of %d : %v\n", len(ds.selection), len(ds.data), ds.selection)
+	fmt.Fprintf(&sb, "Dataset contains a selection of %d instances among %d unique instances\n", len(ds.selection), len(ds.data))
+	for _, i := range ds.selection {
+		fmt.Fprintf(&sb, "#%d:\t%s\n", i, ds.data[i])
+	}
+	return sb.String()
+}
+
 func (ds *dataset) Entropy() (ent float64) {
-	// TODO sum of p(x)Log(x) for all classes ?
 	n := float64(len(ds.data)) // ttl occurences
 	m := make(map[int]int)     // count occurences per class
 	for _, d := range ds.data {
@@ -45,5 +75,14 @@ func (ds *dataset) Entropy() (ent float64) {
 		ent += x * math.Log2(x)
 	}
 	return -ent
+}
 
+func (ds *dataset) Dump(msg ...interface{}) {
+	fmt.Println("------------------------------------")
+	fmt.Print("Dump: ")
+	fmt.Println(msg...)
+	fmt.Println("------------------------------------")
+	fmt.Println(ds)
+	fmt.Printf("data : \n%v\nselection :\n%v\n", ds.data, ds.selection)
+	fmt.Println("------------------------------------")
 }

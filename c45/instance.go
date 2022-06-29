@@ -1,36 +1,40 @@
 package c45
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 var ErrUnknown = fmt.Errorf("unknown value")
 
 type instance struct {
-	data  map[int]float64
+	data  []float64 // using NaN for unknown numbers
 	class int
-}
-
-func (is *instance) SetVal(att int, val float64) {
-	is.data[att] = val
-}
-func (is *instance) SetClass(cl int) {
-	is.class = cl
 }
 
 func (is *instance) GetClass() int {
 	return is.class
 }
 
-func (is *instance) GetVal(att int) (float64, error) {
-	val, ok := is.data[att]
-	if ok {
-		return val, nil
-	} else {
-		return 0, ErrUnknown
-	}
+func (is *instance) GetVal(att int) float64 {
+	return is.data[att]
 }
 
-func NewInstance() Instance {
+func (is *instance) String() string {
+	var sb strings.Builder
+	fmt.Fprintf(&sb, "<%3d>\t", is.class)
+	for _, v := range is.data {
+		fmt.Fprintf(&sb, "%3.2f ", v)
+	}
+	return sb.String()
+}
+
+// NewInstance containg the provided values, for each attribute.
+// Unknown values should be NaN.
+// Once created, an instance should not be modified.
+func NewInstance(class int, values []float64) Instance {
 	is := new(instance)
-	is.data = make(map[int]float64)
+	is.data = values
+	is.class = class
 	return is
 }
