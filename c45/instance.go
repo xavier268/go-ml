@@ -2,6 +2,7 @@ package c45
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -16,7 +17,11 @@ func (is *instance) GetClass() int {
 	return is.class
 }
 
+// Will return NaN if not set, not 0.
 func (is *instance) GetVal(att int) float64 {
+	if att >= len(is.data) {
+		return math.NaN()
+	}
 	return is.data[att]
 }
 
@@ -31,7 +36,7 @@ func (is *instance) String() string {
 }
 
 // NewInstance containg the provided values, for each attribute.
-// Unknown values should be NaN.
+// Unknown values should be NaN, or outside the slice range.
 // Once created, an instance should not be modified.
 func NewInstance(class int, values []float64) Instance {
 	is := new(instance)

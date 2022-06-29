@@ -29,3 +29,8 @@ type Node interface {
 	GetCriteria() (att int)    // what criteria do we manage ?
 	Select(value float64) Node // Select child node corresponding to the value for the given criteria
 }
+
+type Clusterer interface {
+	Kmeans(k int) []Instance
+	Clusterize(centroids []Instance) []Dataset
+}
