@@ -12,14 +12,18 @@ type Dataset interface {
 	Entropy() float64                     // (binary) entropy provides the minimum quantity of information in bits to select a given class.
 	Subset([]int) Dataset                 // select using the absolute instance Ids. Duplicates are allowed.
 	fmt.Stringer
+	Clusterer
 }
 
 // Instances are immutable, once created.
 type Instance interface {
 	GetVal(att int) float64 // Get attribute, NaN if unknown
 	GetClass() int          // Retrieve class, if available. Default to 0.
-	NAtt() int              // max number of attribute (could be lower)
+	Natt() int              // max number of attribute (could be lower)
 	D2(b Instance) float64  //L2 distance
+	Equal(b Instance) bool
+	Almost(b Instance, epsilon float64) bool
+	Less(b Instance) bool
 	fmt.Stringer
 }
 
@@ -33,7 +37,7 @@ type Node interface {
 }
 
 type Clusterer interface {
-	Kmeans(k int) []Instance
-	Clusterize(centroids []Instance) []Dataset
-	Centroid() Instance
+	Centroids(k int) []Instance      // find k centroids
+	Clusterize([]Instance) []Dataset // split by cluster, using provided centroids
+	Centroid() Instance              // find centroid of a Dataset
 }

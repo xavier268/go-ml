@@ -16,13 +16,13 @@ func (ds *dataset) AddInstance(inst Instance) int {
 	id := len(ds.data)
 	ds.selection = append(ds.selection, id)
 	ds.data = append(ds.data, inst)
-	if ds.natt < inst.NAtt() {
-		ds.natt = inst.NAtt()
+	if ds.natt < inst.Natt() {
+		ds.natt = inst.Natt()
 	}
 	return id
 }
 
-func (ds *dataset) NAtt() int {
+func (ds *dataset) Natt() int {
 	return ds.natt
 }
 

@@ -15,6 +15,9 @@ var ti = []*instance{
 	{class: 55, data: []float64{math.NaN(), 5.55}},
 	{class: 66, data: []float64{math.NaN(), 0.66}},
 	{class: 77, data: []float64{math.NaN(), 7.77}},
+	{class: 88, data: []float64{math.NaN(), 7.77}},
+	{class: 99, data: []float64{math.NaN(), 9., .99}},
+	{class: 100, data: []float64{1.5, math.NaN(), 10}},
 }
 
 func TestModelVisual(t *testing.T) {
@@ -39,5 +42,21 @@ func TestModelVisual(t *testing.T) {
 
 	d1, d2 := d.Split(func(ist Instance) bool { return ist.GetClass() <= 22 })
 	fmt.Println("Splitting on class <= 22 :\n", d1, d2)
+
+}
+
+func TestKMeans(t *testing.T) {
+	d := NewDataset()
+	fmt.Println(d)
+	for _, it := range ti {
+		fmt.Println("Added instance # ", d.AddInstance(it), ", entropy : ", d.Entropy())
+	}
+	fmt.Println(d)
+
+	fmt.Println("Computing 1 centroids :")
+	fmt.Println(d.Centroids(1))
+
+	fmt.Println("Computing 3 centroids :")
+	fmt.Println(d.Centroids(3))
 
 }
