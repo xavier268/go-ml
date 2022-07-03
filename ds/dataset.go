@@ -37,6 +37,13 @@ func (ds *Dataset) GetInstance(i int) *Instance {
 	return (ds.data)[i]
 }
 
+func (ds *Dataset) GetClass(i int) int {
+	if i < 0 || i >= len(ds.data) {
+		return 0
+	}
+	return ds.data[i].class
+}
+
 type SplitFunc func(*Instance) bool
 
 func (ds *Dataset) Split(f SplitFunc) (*Dataset, *Dataset) {

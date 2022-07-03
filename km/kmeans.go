@@ -123,3 +123,8 @@ func (km *KMean) GetClusterId(inst *ds.Instance) int {
 func (km *KMean) GetClusterCenter(inst *ds.Instance) *ds.Instance {
 	return km.centroids[km.GetClusterId(inst)]
 }
+
+// GetCentroids retunrs the (up to k) computed centroids.
+func (km *KMean) GetCentroids() []*ds.Instance {
+	return km.centroids
+}
