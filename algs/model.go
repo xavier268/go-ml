@@ -1,4 +1,4 @@
-package c45
+package algs
 
 import "fmt"
 
@@ -39,6 +39,6 @@ type Node interface {
 
 type Clusterer interface {
 	Centroid(natt int) Instance                  // find centroid of a Dataset, with the specified number of attributes
-	Centroids(k int, epsilon float64) []Instance // find k centroids, given an epsilon precision
-	Clusterize(centroids []Instance) []Dataset   // split by cluster, using provided centroids
+	Centroids(k int, epsilon float64) []Instance // find up to k centroids, given an epsilon precision
+	Clusterize(centroids []Instance) []Dataset   // split Dataset by cluster, using the provided centroids
 }

@@ -1,4 +1,4 @@
-package c45
+package algs
 
 type node struct {
 	parent Node
