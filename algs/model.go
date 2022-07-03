@@ -21,7 +21,7 @@ type Instance interface {
 	GetVal(att int) float64 // Get attribute, NaN if unknown
 	GetClass() int          // Retrieve class, if available. Default to 0.
 	Natt() int              // max number of attribute (could be lower)
-	D2(b Instance) float64  // L2 distance, per useful coordinate (to take into account NaN)
+	D2(b Instance) float64  // average L2 distance, per useful coordinate (to take into account NaN)
 	Equal(b Instance) bool
 	Almost(b Instance, epsilon float64) bool
 	Less(b Instance) bool

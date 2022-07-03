@@ -60,7 +60,7 @@ func NewRandomInstance(rd *rand.Rand, natt int) Instance {
 	return ist
 }
 
-// L2 distance between is and b. Distance is zero for NaN attributes.
+// Squarred L2 distance between is and b. Distance is zero for NaN attributes.
 func (is *instance) D2(b Instance) float64 {
 	if b == nil {
 		return 0.
