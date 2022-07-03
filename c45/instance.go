@@ -66,15 +66,20 @@ func (is *instance) D2(b Instance) float64 {
 		return 0.
 	}
 	d2 := 0.0
+	cnt := 0 // useful coordinates
 	for a, v := range is.data {
 		vv := b.GetVal(a)
 		if math.IsNaN(v) || math.IsNaN(vv) {
-			continue
+			continue // ignore NnN comparisons
 		}
 		vv = v - vv
 		d2 = d2 + vv*vv
+		cnt++
 	}
-	return d2
+	if cnt == 0 {
+		return 0.
+	}
+	return d2 / float64(cnt)
 }
 
 func (is *instance) Equal(b Instance) bool {

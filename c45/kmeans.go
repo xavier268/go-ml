@@ -1,20 +1,22 @@
 package c45
 
 import (
-	"fmt"
 	"math"
-	"math/rand"
 )
 
-// Computes the centroids of the k clusters.
-func (ds *dataset) Centroids(k int) []Instance {
-	epsilon := 0.00001
+// Computes the centroids of the k clusters, with the provided (epsilon) precision.
+func (ds *dataset) Centroids(k int, epsilon float64) []Instance {
 	centroids := make([]Instance, k)
 	natt := ds.Natt()
-	rd := rand.New(rand.NewSource(42)) // reproductible random generator
-	// Initialize with the k first centroids in dictionnary.
 	for ci := range centroids {
-		centroids[ci] = NewRandomInstance(rd, natt)
+		c := new(instance)
+		c.data = make([]float64, natt)
+		for i, d := range ds.data {
+			if !math.IsNaN(d.GetVal(i)) {
+				c.data[i] = d.GetVal(i)
+			}
+		}
+		centroids[ci] = c
 	}
 	changed := true
 	for changed {
@@ -24,7 +26,7 @@ func (ds *dataset) Centroids(k int) []Instance {
 			newc := dd[i].Centroid()
 			if !centroids[i].Almost(newc, epsilon) {
 				changed = true
-				fmt.Println("centroid changed ", newc, centroids[i])
+				//fmt.Println("centroid changed ", newc, centroids[i])
 				centroids[i] = newc
 			}
 		}
@@ -32,7 +34,7 @@ func (ds *dataset) Centroids(k int) []Instance {
 	return centroids
 }
 
-// Clusterize splits the instances in ds in the clusters corresponding to the provided centroids.
+// Clusterize splits the instances in ds into the clusters corresponding to the provided centroids.
 func (ds *dataset) Clusterize(centroids []Instance) []Dataset {
 
 	dd := make([]Dataset, len(centroids))
@@ -44,7 +46,7 @@ func (ds *dataset) Clusterize(centroids []Instance) []Dataset {
 		var bestd float64
 		var bestci int = -1
 		ii := ds.data[s]
-		fmt.Println("Where to put ", ii)
+		//fmt.Println("Where to put ", ii)
 		for ci, cc := range centroids {
 			d2 := cc.D2(ii)
 			//fmt.Println("   distance from ", cc, "to  ", ii, "is ", d2)
@@ -53,7 +55,7 @@ func (ds *dataset) Clusterize(centroids []Instance) []Dataset {
 				bestd = d2
 			}
 		}
-		fmt.Println("putting ii in cluster # ", bestci)
+		//fmt.Println("putting ii in cluster # ", bestci)
 		dd[bestci].AddInstance(ii)
 	}
 	return dd

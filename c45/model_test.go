@@ -15,7 +15,7 @@ var ti = []*instance{
 	{class: 55, data: []float64{math.NaN(), 5.55}},
 	{class: 66, data: []float64{math.NaN(), 0.66}},
 	{class: 77, data: []float64{math.NaN(), 7.77}},
-	{class: 88, data: []float64{math.NaN(), 7.77}},
+	{class: 88, data: []float64{math.NaN(), 8.88}},
 	{class: 99, data: []float64{math.NaN(), 9., .99}},
 	{class: 100, data: []float64{1.5, math.NaN(), 10}},
 }
@@ -53,10 +53,21 @@ func TestKMeans(t *testing.T) {
 	}
 	fmt.Println(d)
 
-	fmt.Println("Computing 1 centroids :")
-	fmt.Println(d.Centroids(1))
+	for k := 1; k < 4; k++ {
+		showCentroids(d, k, 1e-99)
+	}
 
-	fmt.Println("Computing 3 centroids :")
-	fmt.Println(d.Centroids(3))
+	//showCentroids(d, 20, 0.0001)
 
+}
+
+func showCentroids(d Dataset, k int, epsilon float64) {
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+	fmt.Printf("Computing %d centroids :\n", k)
+	res := d.Centroids(k, epsilon)
+	cc := d.Clusterize(res)
+	for i, c := range res {
+		fmt.Printf("Centroid # %d:\t%v\n", i, c)
+		fmt.Println(cc[i])
+	}
 }

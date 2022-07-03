@@ -20,7 +20,7 @@ type Instance interface {
 	GetVal(att int) float64 // Get attribute, NaN if unknown
 	GetClass() int          // Retrieve class, if available. Default to 0.
 	Natt() int              // max number of attribute (could be lower)
-	D2(b Instance) float64  //L2 distance
+	D2(b Instance) float64  // L2 distance, per useful coordinate (to take into account NaN)
 	Equal(b Instance) bool
 	Almost(b Instance, epsilon float64) bool
 	Less(b Instance) bool
@@ -37,7 +37,7 @@ type Node interface {
 }
 
 type Clusterer interface {
-	Centroids(k int) []Instance      // find k centroids
-	Clusterize([]Instance) []Dataset // split by cluster, using provided centroids
-	Centroid() Instance              // find centroid of a Dataset
+	Centroid() Instance                          // find centroid of a Dataset
+	Centroids(k int, epsilon float64) []Instance // find k centroids, given an epsilon precision
+	Clusterize(centroids []Instance) []Dataset   // split by cluster, using provided centroids
 }
