@@ -1,4 +1,4 @@
-package algs
+package ds
 
 import (
 	"fmt"
@@ -9,28 +9,28 @@ import (
 
 var ErrUnknown = fmt.Errorf("unknown value")
 
-type instance struct {
+type Instance struct {
 	data  []float64 // using NaN for unknown numbers
 	class int
 }
 
-func (is *instance) GetClass() int {
+func (is *Instance) GetClass() int {
 	return is.class
 }
 
-func (is *instance) Natt() int {
+func (is *Instance) Natt() int {
 	return len(is.data)
 }
 
 // Will return NaN if not set, not 0.
-func (is *instance) GetVal(att int) float64 {
+func (is *Instance) GetVal(att int) float64 {
 	if att >= len(is.data) {
 		return math.NaN()
 	}
 	return is.data[att]
 }
 
-func (is *instance) String() string {
+func (is *Instance) String() string {
 	var sb strings.Builder
 	fmt.Fprintf(&sb, "<%d> (", is.class)
 	for _, v := range is.data {
@@ -43,16 +43,16 @@ func (is *instance) String() string {
 // NewInstance containg the provided values, for each attribute.
 // Unknown values should be NaN, or outside the slice range.
 // Once created, an instance should not be modified.
-func NewInstance(class int, values []float64) Instance {
-	is := new(instance)
+func NewInstance(class int, values []float64) *Instance {
+	is := new(Instance)
 	is.data = values
 	is.class = class
 	return is
 }
 
-func NewRandomInstance(rd *rand.Rand, natt int) Instance {
+func NewRandomInstance(rd *rand.Rand, natt int) *Instance {
 
-	ist := new(instance)
+	ist := new(Instance)
 	ist.data = make([]float64, natt)
 	for i := 0; i < natt; i++ {
 		ist.data[i] = rd.Float64() // between 0. and 1.
@@ -61,7 +61,7 @@ func NewRandomInstance(rd *rand.Rand, natt int) Instance {
 }
 
 // Squarred L2 distance between is and b. Distance is zero for NaN attributes.
-func (is *instance) D2(b Instance) float64 {
+func (is *Instance) D2(b *Instance) float64 {
 	if b == nil {
 		return 0.
 	}
@@ -82,7 +82,7 @@ func (is *instance) D2(b Instance) float64 {
 	return d2 / float64(cnt)
 }
 
-func (is *instance) Equal(b Instance) bool {
+func (is Instance) Equal(b *Instance) bool {
 	natt := b.Natt()
 	if is.Natt() > natt {
 		natt = is.Natt()
@@ -101,7 +101,7 @@ func (is *instance) Equal(b Instance) bool {
 }
 
 // Less is is < b. By convention, NaN < ...
-func (is instance) Less(b Instance) bool {
+func (is Instance) Less(b Instance) bool {
 	natt := b.Natt()
 	if is.Natt() > natt {
 		natt = is.Natt()
@@ -120,7 +120,10 @@ func (is instance) Less(b Instance) bool {
 
 }
 
-func (is *instance) Almost(b Instance, epsilon float64) bool {
+func (is *Instance) Almost(b *Instance, epsilon float64) bool {
+	if b == nil {
+		return false
+	}
 	natt := b.Natt()
 	if is.Natt() > natt {
 		natt = is.Natt()

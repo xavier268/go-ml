@@ -1,4 +1,4 @@
-package algs
+package ds
 
 import (
 	"fmt"
@@ -18,15 +18,7 @@ func TestModelVisual(t *testing.T) {
 	}
 	fmt.Println(d)
 
-	fmt.Println("Duplicating instances 2 & 1")
-	d.DuplicateInstance(2, 1)
-	fmt.Println(d)
-	d.(*dataset).Dump("with duplicated instances")
-
-	s := d.Subset([]int{2, 1, 2})
-	fmt.Println("Subset #2, #1, #2:\n", s)
-
-	d1, d2 := d.Split(func(ist Instance) bool { return ist.GetClass() <= 22 })
+	d1, d2 := d.Split(func(ist *Instance) bool { return ist.GetClass() <= 22 })
 	fmt.Println("Splitting on class <= 22 :\n", d1, d2)
 
 }

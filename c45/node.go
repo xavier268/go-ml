@@ -1,5 +1,6 @@
-package algs
+package c45
 
+/* WIP
 type node struct {
 	parent Node
 	crit   int     // criteria
@@ -34,3 +35,4 @@ func NewNode(parent Node) Node {
 	n.parent = parent
 	return n
 }
+*/
