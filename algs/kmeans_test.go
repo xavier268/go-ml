@@ -103,7 +103,7 @@ func showCentroids(d Dataset, k int, epsilon float64) {
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 	fmt.Printf("Computing %d centroids :\n", k)
 	res := d.Centroids(k, epsilon)
-	cc := d.Clusterize(res)
+	cc := d.Partition(res)
 	for i, c := range res {
 		fmt.Printf("Centroid # %d:\t%v\n", i, c)
 		fmt.Println(cc[i])

@@ -33,12 +33,12 @@ func (ds *dataset) Centroids(k int, epsilon float64) []Instance {
 	changed := true
 	for changed {
 		changed = false
-		dd := ds.Clusterize(centroids)
+		dd := ds.Partition(centroids)
 		for i := range centroids {
 			newc := dd[i].Centroid(natt)
 			if !centroids[i].Almost(newc, epsilon) {
 				changed = true
-				fmt.Printf("centroid #%d changed from %v to %v\n", i, newc, centroids[i])
+				fmt.Printf("centroid #%d changed from %v to %v\n", i, centroids[i], newc)
 				centroids[i] = newc
 			}
 		}
@@ -46,8 +46,8 @@ func (ds *dataset) Centroids(k int, epsilon float64) []Instance {
 	return centroids
 }
 
-// Clusterize splits the instances in ds into the clusters corresponding to the provided centroids.
-func (ds *dataset) Clusterize(centroids []Instance) []Dataset {
+// Partition splits the instances in ds into the clusters corresponding to the provided centroids.
+func (ds *dataset) Partition(centroids []Instance) []Dataset {
 
 	dd := make([]Dataset, len(centroids))
 	for i := range dd {
