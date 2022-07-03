@@ -11,6 +11,7 @@ type Dataset interface {
 	Split(f SplitFunc) (Dataset, Dataset) // split dataset based upon the function result. The fisrt for true, the second for false.
 	Entropy() float64                     // (binary) entropy provides the minimum quantity of information in bits to select a given class.
 	Subset([]int) Dataset                 // select using the absolute instance Ids. Duplicates are allowed.
+	GetNatt() int                         // number of attributes (upper bound, could be lower)
 	fmt.Stringer
 	Clusterer
 }
@@ -37,7 +38,7 @@ type Node interface {
 }
 
 type Clusterer interface {
-	Centroid() Instance                          // find centroid of a Dataset
+	Centroid(natt int) Instance                  // find centroid of a Dataset, with the specified number of attributes
 	Centroids(k int, epsilon float64) []Instance // find k centroids, given an epsilon precision
 	Clusterize(centroids []Instance) []Dataset   // split by cluster, using provided centroids
 }

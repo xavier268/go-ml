@@ -12,6 +12,10 @@ type dataset struct {
 	natt      int
 }
 
+func (ds *dataset) GetNatt() int {
+	return ds.natt
+}
+
 func (ds *dataset) AddInstance(inst Instance) int {
 	id := len(ds.data)
 	ds.selection = append(ds.selection, id)
