@@ -1,3 +1,4 @@
+// Package ds contains the data structures, common to all algorithms.
 package ds
 
 import (

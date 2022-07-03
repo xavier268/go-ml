@@ -1,3 +1,4 @@
+//Package km contains the kmean algorithm.
 package kmeans
 
 import (
@@ -73,19 +74,7 @@ func (km *KMean) partition(dst *ds.Dataset) []*ds.Dataset {
 	}
 
 	for _, ii := range dst.GetInstances() {
-		var bestd float64
-		var bestci int = -1
-		//ii := ds.data[s]
-		//fmt.Println("Where to put ", ii)
-		for ci, cc := range km.centroids {
-			d2 := cc.D2(ii)
-			//fmt.Println("   distance from ", cc, "to  ", ii, "is ", d2)
-			if bestci < 0 || d2 < bestd {
-				bestci = ci
-				bestd = d2
-			}
-		}
-		//fmt.Println("putting ii in cluster # ", bestci)
+		bestci := km.GetClusterId(ii)
 		dd[bestci].AddInstance(ii)
 	}
 	return dd

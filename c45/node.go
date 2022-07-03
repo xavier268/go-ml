@@ -1,3 +1,4 @@
+// Package c45 contains the c4.5 algorithm.
 package c45
 
 /* WIP
