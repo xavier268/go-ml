@@ -1,3 +1,3 @@
-module github.com/xavier268/go-c45
+module github.com/xavier268/go-ml
 
 go 1.18
