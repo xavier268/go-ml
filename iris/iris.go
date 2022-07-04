@@ -1,3 +1,4 @@
+// Package iris creates a Dataset with the iris data.
 package iris
 
 import (
