@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/xavier268/go-c45/ds"
+	"github.com/xavier268/go-ml/ds"
 )
 
 func TestCentroid1(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/xavier268/go-c45/ds"
+	"github.com/xavier268/go-ml/ds"
 )
 
 type KMean struct {

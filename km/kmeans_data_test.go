@@ -3,7 +3,7 @@ package kmeans
 import (
 	"math"
 
-	"github.com/xavier268/go-c45/ds"
+	"github.com/xavier268/go-ml/ds"
 )
 
 // Add examples, but do not change these !

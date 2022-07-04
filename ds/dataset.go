@@ -4,7 +4,9 @@ package ds
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 type Dataset struct {
@@ -112,4 +114,15 @@ func (ds *Dataset) GetInstances() []*Instance {
 
 func (ds *Dataset) NbInstances() int {
 	return len(ds.data)
+}
+
+// SampleSplit splits the dataset in 2 parts, with the provided precentage in the first dataset (approx).
+// If percent is 1.0, all samples will be in the first dataset, if 0.0, non.
+func (ds *Dataset) SampleSplit(percent float64) (*Dataset, *Dataset) {
+	rd := rand.New(rand.NewSource(time.Now().Unix()))
+
+	d1, d2 := ds.Split(func(*Instance) bool {
+		return rd.Float64() < percent
+	})
+	return d1, d2
 }

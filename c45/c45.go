@@ -4,7 +4,7 @@ import (
 	"math"
 	"sort"
 
-	"github.com/xavier268/go-c45/ds"
+	"github.com/xavier268/go-ml/ds"
 )
 
 // NewC45 creates and train a new, unpruned, c4.5 tree trained with the provided dataset.

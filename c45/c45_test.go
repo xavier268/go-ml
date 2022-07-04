@@ -6,7 +6,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/xavier268/go-c45/ds"
+	"github.com/xavier268/go-ml/ds"
 )
 
 var t1 = []*ds.Instance{
