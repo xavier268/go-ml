@@ -116,7 +116,7 @@ func gainSplit(dst *ds.Dataset, att int, ctf float64) (g, s float64) {
 
 // compute a list of cutoff values from a non sorted, but depuplicated slice of values, with  NaN removed.
 func cutoffs(ctf []float64) []float64 {
-	if len(ctf) <= 1 { // If one or less value, no critera will work !
+	if len(ctf) <= 1 { // If one or less value, no criteria will work !
 		return []float64{}
 	}
 	sort.Float64Slice(ctf).Sort()
