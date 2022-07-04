@@ -41,7 +41,7 @@ func (is *Instance) String() string {
 	return sb.String()
 }
 
-// NewInstance containg the provided values, for each attribute.
+// NewInstance will contain the provided values, for each attribute.
 // Unknown values should be NaN, or outside the slice range.
 // Once created, an instance should not be modified.
 func NewInstance(class int, values []float64) *Instance {
