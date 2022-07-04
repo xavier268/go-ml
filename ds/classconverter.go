@@ -34,6 +34,7 @@ func (cc *ClassConverter) ToString(id int) string {
 	}
 	return "unknownClass"
 }
+
 // String gets the class names in a human readable format.
 func (cc *ClassConverter) String() string {
 	return fmt.Sprintf("%d classes : %q", len(cc.a), cc.a)

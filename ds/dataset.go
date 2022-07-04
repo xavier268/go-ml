@@ -47,6 +47,7 @@ func (ds *Dataset) GetClass(i int) int {
 	}
 	return ds.data[i].class
 }
+
 // SplitFunc is used to separate a Dataset in 2 Datasets.
 // The first one returned will contain the 'true' values of the function.
 type SplitFunc func(*Instance) bool
