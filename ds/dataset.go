@@ -28,10 +28,6 @@ func (ds *Dataset) AddInstance(inst *Instance) int {
 	return id
 }
 
-func (ds *Dataset) Natt() int {
-	return ds.natt
-}
-
 func (ds *Dataset) GetInstance(i int) *Instance {
 	if i < 0 || i >= len(ds.data) {
 		return nil
@@ -76,7 +72,7 @@ func (ds *Dataset) String() string {
 }
 
 func (ds *Dataset) Entropy() (ent float64) {
-	n, m := ds.countClasses()
+	n, m := ds.CountClasses()
 	fn := float64(n)
 
 	for _, c := range m {
@@ -92,13 +88,13 @@ func (ds *Dataset) Dump(msg ...any) {
 	fmt.Println(msg...)
 	fmt.Println("------------------------------------")
 	fmt.Println(ds)
-	n, det := ds.countClasses()
+	n, det := ds.CountClasses()
 	fmt.Printf("data : \n%v\nclass repartition :\n%v (total : %d) \n", ds.data, det, n)
 	fmt.Println("------------------------------------")
 }
 
-// Retun the total selected instances and a map from class -> nb of instances in class (including duplicates)
-func (ds *Dataset) countClasses() (ttl int, detail map[int]int) {
+// CountClasses return the total selected instances and a map from class -> nb of instances in class (including duplicates)
+func (ds *Dataset) CountClasses() (ttl int, detail map[int]int) {
 
 	m := make(map[int]int)
 	for _, s := range ds.data {

@@ -1,5 +1,5 @@
 //Package km contains the kmean algorithm.
-package kmeans
+package km
 
 import (
 	"fmt"
@@ -42,7 +42,7 @@ func NewKMean(dst *ds.Dataset, k int) *KMean {
 	changed := true
 	for changed {
 		changed = false
-		dd := km.partition(dst)
+		dd := km.Partition(dst)
 		for i := range km.centroids {
 			newc := compute1Centroid(dd[i], km.natt) // compute a new centroid
 			if !km.centroids[i].Almost(newc) {
@@ -55,8 +55,8 @@ func NewKMean(dst *ds.Dataset, k int) *KMean {
 	return km
 }
 
-// partition splits the instances in ds into the clusters corresponding to the provided centroids.
-func (km *KMean) partition(dst *ds.Dataset) []*ds.Dataset {
+// Partition splits the instances in ds into the clusters corresponding to the provided centroids.
+func (km *KMean) Partition(dst *ds.Dataset) []*ds.Dataset {
 
 	// handle special cases
 	if dst == nil || len(km.centroids) == 0 {
@@ -126,4 +126,15 @@ func (km *KMean) GetClusterCenter(inst *ds.Instance) *ds.Instance {
 // GetCentroids retunrs the (up to k) computed centroids.
 func (km *KMean) GetCentroids() []*ds.Instance {
 	return km.centroids
+}
+
+func (kk *KMean) Dump(d *ds.Dataset) {
+
+	cc := kk.Partition(d)
+	for i, c := range kk.centroids {
+		fmt.Printf("Centroid # %d:\t%v\n", i, c)
+		fmt.Println(cc[i]) // display cluster content
+
+	}
+
 }

@@ -1,4 +1,4 @@
-package kmeans
+package km
 
 import (
 	"fmt"
@@ -106,16 +106,5 @@ func showCentroids(d *ds.Dataset, k int) {
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 	fmt.Printf("Computing %d centroids for :\n%v\n", k, d)
 	km := NewKMean(d, k)
-	cc := km.partition(d)
-	for i, c := range km.centroids {
-		fmt.Printf("Centroid # %d:\t%v\n", i, c)
-		fmt.Println(cc[i]) // display cluster content
-
-		// check cluster attribution works for this dataset !
-		for _, inst := range cc[i].GetInstances() {
-			if km.GetClusterId(inst) != i {
-				panic("invalid attribution !")
-			}
-		}
-	}
+	km.Dump(d)
 }
