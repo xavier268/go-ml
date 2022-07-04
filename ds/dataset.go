@@ -9,15 +9,19 @@ import (
 	"time"
 )
 
+// Dataset is the main objet to store the data instances, with the class attached if relevant.
 type Dataset struct {
 	data []*Instance // Instances are shared as much as possible between dataset. Instances are immutable.
 	natt int
 }
 
+// GetNatt provides an uppe bound for the number of attributes in Instances.
+// it is ok to query a non allocated attribute, but you will get a NaN.
 func (ds *Dataset) GetNatt() int {
 	return ds.natt
 }
 
+// AddInstance adds an instance to the dataset. Instances being immutable, only a pointer to it is used, making it space efficient.
 func (ds *Dataset) AddInstance(inst *Instance) int {
 
 	id := len(ds.data)
@@ -28,6 +32,7 @@ func (ds *Dataset) AddInstance(inst *Instance) int {
 	return id
 }
 
+// GetInstance gets a pointer to the i-th instance.
 func (ds *Dataset) GetInstance(i int) *Instance {
 	if i < 0 || i >= len(ds.data) {
 		return nil
@@ -35,15 +40,18 @@ func (ds *Dataset) GetInstance(i int) *Instance {
 	return (ds.data)[i]
 }
 
+// GetClass returns the class of the i-th instance, or 0 if not set.
 func (ds *Dataset) GetClass(i int) int {
 	if i < 0 || i >= len(ds.data) {
 		return 0
 	}
 	return ds.data[i].class
 }
-
+// SplitFunc is used to separate a Dataset in 2 Datasets.
+// The first one returned will contain the 'true' values of the function.
 type SplitFunc func(*Instance) bool
 
+// Split the Dataset in 2 Datasets, using the provided SplitFunc.
 func (ds *Dataset) Split(f SplitFunc) (*Dataset, *Dataset) {
 	d1, d2 := NewDataset(), NewDataset()
 	for _, inst := range ds.data {
@@ -56,11 +64,14 @@ func (ds *Dataset) Split(f SplitFunc) (*Dataset, *Dataset) {
 	return d1, d2
 }
 
+// NewDataset creates a new Dataset ready to use, but with no instances yet.
+// Use AddInstance to add them.
 func NewDataset() *Dataset {
 	ds := new(Dataset)
 	return ds
 }
 
+// String provides a human readable format for the Dataset.
 func (ds *Dataset) String() string {
 	var sb strings.Builder
 	//fmt.Fprintf(&sb, "Dataset contains a selection of %d instances out of %d : %v\n", len(ds.selection), len(ds.data), ds.selection)
@@ -71,6 +82,7 @@ func (ds *Dataset) String() string {
 	return sb.String()
 }
 
+// Entropy defines the quantity of information, in bits, attached with the classes of the instances in the Dataset.
 func (ds *Dataset) Entropy() (ent float64) {
 	n, m := ds.CountClasses()
 	fn := float64(n)
@@ -82,6 +94,8 @@ func (ds *Dataset) Entropy() (ent float64) {
 	return -ent
 }
 
+// Dump will diplay the provided messages as title, and then print detailled information about the Dataset.
+// Used for debugging.
 func (ds *Dataset) Dump(msg ...any) {
 	fmt.Println("------------------------------------")
 	fmt.Print("Dump: ")
@@ -104,10 +118,12 @@ func (ds *Dataset) CountClasses() (ttl int, detail map[int]int) {
 	return len(ds.data), m
 }
 
+// GetInstances returns an array with all the instances from the Dataset.
 func (ds *Dataset) GetInstances() []*Instance {
 	return ds.data
 }
 
+// NbInstances is the number of Instance(s) loaded.
 func (ds *Dataset) NbInstances() int {
 	return len(ds.data)
 }
