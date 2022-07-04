@@ -8,7 +8,8 @@ import (
 	"github.com/xavier268/go-ml/ds"
 )
 
-// NewIrisDataset create a Dataset containing the full iris dataset.
+// NewIrisDataset create a Dataset containing the full iris dataset,
+// and a ClassConverter, converting between the names and the id of the classes.
 func NewIrisDataset() (*ds.Dataset, *ds.ClassConverter) {
 
 	f, err := os.Open("iris.txt")
