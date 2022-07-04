@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-var ErrUnknown = fmt.Errorf("unknown value")
-
 // Precision when comparing float64 values.
 var Precision float64 = 1e-15
 
