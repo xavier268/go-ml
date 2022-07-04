@@ -9,7 +9,7 @@ import (
 )
 
 type KMean struct {
-	k         int // numebr of centroids
+	k         int // number of centroids
 	centroids []*ds.Instance
 	natt      int // nuber of attributes
 }
@@ -123,7 +123,7 @@ func (km *KMean) GetClusterCenter(inst *ds.Instance) *ds.Instance {
 	return km.centroids[km.GetClusterId(inst)]
 }
 
-// GetCentroids retunrs the (up to k) computed centroids.
+// GetCentroids returns the (up to k) computed centroids.
 func (km *KMean) GetCentroids() []*ds.Instance {
 	return km.centroids
 }
