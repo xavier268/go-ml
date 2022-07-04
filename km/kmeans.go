@@ -60,7 +60,7 @@ func (km *KMean) Partition(dst *ds.Dataset) []*ds.Dataset {
 
 	// handle special cases
 	if dst == nil || len(km.centroids) == 0 {
-		return nil // no  Dataset, beacuse no centroids
+		return nil // no  Dataset, because no centroids
 	}
 	if len(km.centroids) == 1 {
 		return []*ds.Dataset{dst} // single  Dataset, identical to input.
