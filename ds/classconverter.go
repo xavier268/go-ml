@@ -2,11 +2,13 @@ package ds
 
 import "fmt"
 
+// ClassConverter maps between class names (string) and class ids (int).
 type ClassConverter struct {
 	m map[string]int
 	a []string
 }
 
+// NewClassConverter creates a ClassConverter ready to use.
 func NewClassConverter() *ClassConverter {
 	cc := new(ClassConverter)
 	cc.m = make(map[string]int, 4)
@@ -14,7 +16,7 @@ func NewClassConverter() *ClassConverter {
 	return cc
 }
 
-// ToId gets the id of a class name, or register the name if unknown yet.
+// ToId gets the id of a class name, and register the name with a new ID if class is unknown yet.
 func (cc *ClassConverter) ToId(clname string) int {
 	if id, ok := cc.m[clname]; ok {
 		return id
@@ -25,14 +27,14 @@ func (cc *ClassConverter) ToId(clname string) int {
 	return id
 }
 
-// ToString retuens the string name, or "unknownClass" if unknown.
+// ToString returns the string name, or "unknownClass" if unknown.
 func (cc *ClassConverter) ToString(id int) string {
 	if id < len(cc.a) {
 		return cc.a[id]
 	}
 	return "unknownClass"
 }
-
+// String gets the class names in a human readable format.
 func (cc *ClassConverter) String() string {
 	return fmt.Sprintf("%d classes : %q", len(cc.a), cc.a)
 }
