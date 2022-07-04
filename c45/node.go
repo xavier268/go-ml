@@ -12,6 +12,7 @@ type Node struct {
 	cut   float64 // cut-off value of the attribute
 	child []*Node // up to 2 childs
 	class int     // class, if leaf
+	count int     // count of training examples at this node
 }
 
 func (n *Node) IsLeaf() bool {
@@ -43,13 +44,13 @@ func (n *Node) String() string {
 
 func (n *Node) string(sb *strings.Builder, pad string) {
 	if len(n.child) == 0 {
-		fmt.Fprintf(sb, "%s (class = %d) \n", pad, n.class)
+		fmt.Fprintf(sb, "%s (class = %d, count=%d) \n", pad, n.class, n.count)
 		return
 	}
 
-	fmt.Fprintf(sb, "%satt#%d < %f ? :\n", pad, n.crit, n.cut)
-	fmt.Fprintf(sb, "%syes>", pad)
-	n.child[0].string(sb, pad+"| ")
-	fmt.Fprintf(sb, "%sno >", pad)
-	n.child[1].string(sb, pad+"| ")
+	fmt.Fprintf(sb, "%satt#%d < %f ? (count=%d)\n", pad, n.crit, n.cut, n.count)
+	fmt.Fprintf(sb, "   %syes>", pad)
+	n.child[0].string(sb, pad+"   ")
+	fmt.Fprintf(sb, "   %sno >", pad)
+	n.child[1].string(sb, pad+"   ")
 }
