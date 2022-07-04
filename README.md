@@ -1,4 +1,4 @@
-# go-c45
+# go-ml
 
 Implementation of various popular machine learning algorithms :
 
