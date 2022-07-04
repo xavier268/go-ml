@@ -30,7 +30,7 @@ func TestCentroid2(t *testing.T) {
 	}
 	c := compute1Centroid(d, d.GetNatt())
 	should := ds.NewInstance(0, []float64{0.8})
-	if !c.Almost(should, 0.00000001) {
+	if !c.Almost(should) {
 		fmt.Printf("The centroid of the full dataset %v is invalid :\n%v\n", d, c)
 		t.Fatal("Invalid centroid computation")
 	}
@@ -44,7 +44,7 @@ func TestCentroid3(t *testing.T) {
 	}
 	c := compute1Centroid(d, d.GetNatt())
 	should := ds.NewInstance(0, []float64{0.8})
-	if !c.Almost(should, 0.00000001) {
+	if !c.Almost(should) {
 		fmt.Printf("The centroid of the full dataset %v is invalid :\n%v\n", d, c)
 		t.Fatal("Invalid centroid computation")
 	}
@@ -58,7 +58,7 @@ func TestCentroid4(t *testing.T) {
 	}
 	c := compute1Centroid(d, d.GetNatt())
 	should := ds.NewInstance(0, []float64{1.6, 0., 333.})
-	if !c.Almost(should, 0.00000001) {
+	if !c.Almost(should) {
 		fmt.Printf("The centroid of the full dataset %v is invalid :\n%v\n", d, c)
 		t.Fatal("Invalid centroid computation")
 	}
@@ -72,7 +72,7 @@ func TestCentroid5(t *testing.T) {
 	}
 	c := compute1Centroid(d, d.GetNatt())
 	should := ds.NewInstance(0, []float64{112.2, 0., 333.})
-	if !c.Almost(should, 0.00000001) {
+	if !c.Almost(should) {
 		fmt.Printf("The centroid of the full dataset %v is invalid :\n%v\n", d, c)
 		t.Fatal("Invalid centroid computation")
 	}
@@ -87,7 +87,7 @@ func TestKMeansVisual(t *testing.T) {
 	}
 	fmt.Println(d)
 	for k := 1; k < 4; k++ {
-		showCentroids(d, k, 1e-99)
+		showCentroids(d, k)
 	}
 
 	d = ds.NewDataset()
@@ -96,16 +96,16 @@ func TestKMeansVisual(t *testing.T) {
 	}
 	fmt.Println(d)
 	for k := 1; k < 4; k++ {
-		showCentroids(d, k, 1e-99)
+		showCentroids(d, k)
 	}
-	showCentroids(d, 20, 1e-99)
+	showCentroids(d, 20)
 
 }
 
-func showCentroids(d *ds.Dataset, k int, epsilon float64) {
+func showCentroids(d *ds.Dataset, k int) {
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 	fmt.Printf("Computing %d centroids for :\n%v\n", k, d)
-	km := NewKMean(d, k, epsilon)
+	km := NewKMean(d, k)
 	cc := km.partition(d)
 	for i, c := range km.centroids {
 		fmt.Printf("Centroid # %d:\t%v\n", i, c)

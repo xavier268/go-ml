@@ -11,14 +11,13 @@ import (
 type KMean struct {
 	k         int // numebr of centroids
 	centroids []*ds.Instance
-	epsilon   float64 // precision
-	natt      int     // nuber of attributes
+	natt      int // nuber of attributes
 }
 
-// NewKMean define k clusters on the ds Dataset with precision epsilon.
-func NewKMean(dst *ds.Dataset, k int, epsilon float64) *KMean {
+// NewKMean define k clusters on the ds Dataset with defined precision.
+func NewKMean(dst *ds.Dataset, k int) *KMean {
 	km := new(KMean)
-	km.k, km.epsilon, km.natt = k, epsilon, dst.GetNatt()
+	km.k, km.natt = k, dst.GetNatt()
 	km.centroids = make([]*ds.Instance, k)
 
 	// initialize the centroids with real instances
@@ -46,7 +45,7 @@ func NewKMean(dst *ds.Dataset, k int, epsilon float64) *KMean {
 		dd := km.partition(dst)
 		for i := range km.centroids {
 			newc := compute1Centroid(dd[i], km.natt) // compute a new centroid
-			if !km.centroids[i].Almost(newc, km.epsilon) {
+			if !km.centroids[i].Almost(newc) {
 				changed = true
 				fmt.Printf("centroid #%d changed from %v to %v\n", i, km.centroids[i], newc)
 				km.centroids[i] = newc

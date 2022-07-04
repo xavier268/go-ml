@@ -9,6 +9,9 @@ import (
 
 var ErrUnknown = fmt.Errorf("unknown value")
 
+// Precision when comparing float64 values.
+var Precision float64 = 1e-15
+
 type Instance struct {
 	data  []float64 // using NaN for unknown numbers
 	class int
@@ -120,7 +123,7 @@ func (is Instance) Less(b Instance) bool {
 
 }
 
-func (is *Instance) Almost(b *Instance, epsilon float64) bool {
+func (is *Instance) Almost(b *Instance) bool {
 	if b == nil {
 		return false
 	}
@@ -134,7 +137,7 @@ func (is *Instance) Almost(b *Instance, epsilon float64) bool {
 		if math.IsNaN(v1) && math.IsNaN(v2) {
 			continue
 		}
-		if math.Abs(v1-v2) > epsilon {
+		if math.Abs(v1-v2) > Precision {
 			return false
 		}
 	}
