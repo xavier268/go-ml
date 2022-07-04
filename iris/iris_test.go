@@ -13,7 +13,7 @@ func TestVisualIris(t *testing.T) {
 	//iris.Dump("Iris dataset content")
 	fmt.Println(cc)
 
-	train, test := iris.SampleSplit(0.25) // 70% training, 30% testing.
+	train, test := iris.SampleSplit(0.25) // 25% training, 75% testing.
 	t45 := c45.NewC45(train)
 
 	fmt.Println(t45)
