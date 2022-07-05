@@ -95,7 +95,7 @@ func (ds *Dataset) Entropy() (ent float64) {
 	return -ent
 }
 
-// Dump will diplay the provided messages as title, and then print detailled information about the Dataset.
+// Dump will diplay the provided messages as title, and then print detailed information about the Dataset.
 // Used for debugging.
 func (ds *Dataset) Dump(msg ...any) {
 	fmt.Println("------------------------------------")
