@@ -190,7 +190,11 @@ func (ds *Dataset) Normalize() *Dataset {
 			case 1:
 				newi[i] = 0 // a single value, normalized is always 0.
 			default:
-				newi[i] = (ins.GetVal(i) - m.GetVal(i)) / math.Sqrt(v.GetVal(i))
+				if v.GetVal(i) > Precision {
+					newi[i] = (ins.GetVal(i) - m.GetVal(i)) / math.Sqrt(v.GetVal(i))
+				} else { // variance almost 0, all numers almost equals ...
+					newi[i] = (ins.GetVal(i) - m.GetVal(i))
+				}
 			}
 		}
 		d.AddInstance(NewInstance(0, newi))

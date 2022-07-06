@@ -83,14 +83,14 @@ func TestNormalizeVisual(t *testing.T) {
 	for a := 0; a < dn.GetNatt(); a++ {
 		v1, v2 := nc.GetVal(a), c.GetVal(a)
 		if !math.IsNaN(v1) && math.Abs(v1-v2) > Precision {
-			t.Fatal("Failed normalization count")
+			t.Fatal("Failed normalization count", a, v1, v2)
 		}
 		v1, v2 = nm.GetVal(a), 0.
 		if !math.IsNaN(v1) && math.Abs(v1-v2) > Precision {
 			t.Fatal("Failed normalization mean")
 		}
 		v1, v2 = nv.GetVal(a), 1.0
-		if !math.IsNaN(v1) && math.Abs(v1-v2) > Precision {
+		if !math.IsNaN(v1) && math.Abs(v1) > Precision && math.Abs(v1-v2) > Precision { // var, if it exists, should be 0 or 1
 			t.Fatal("Failed normalization var")
 		}
 
