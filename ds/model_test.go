@@ -60,3 +60,40 @@ func TestChooseOneInt(t *testing.T) {
 		t.Fatal("erreur choosing with only one option")
 	}
 }
+
+func TestNormalizeVisual(t *testing.T) {
+
+	d := NewDataset()
+	for _, it := range ti {
+		d.AddInstance(it)
+	}
+	fmt.Println("Raw :\n", d)
+	m, v, c := d.MeanVarCount()
+	fmt.Println("Mean  : ", m)
+	fmt.Println("Var   : ", v)
+	fmt.Println("Count : ", c)
+
+	dn := d.Normalize()
+	fmt.Println("Normalized : \n", dn)
+	nm, nv, nc := dn.MeanVarCount()
+	fmt.Println("Mean  : ", nm)
+	fmt.Println("Var   : ", nv)
+	fmt.Println("Count : ", nc)
+
+	for a := 0; a < dn.GetNatt(); a++ {
+		v1, v2 := nc.GetVal(a), c.GetVal(a)
+		if !math.IsNaN(v1) && math.Abs(v1-v2) > Precision {
+			t.Fatal("Failed normalization count")
+		}
+		v1, v2 = nm.GetVal(a), 0.
+		if !math.IsNaN(v1) && math.Abs(v1-v2) > Precision {
+			t.Fatal("Failed normalization mean")
+		}
+		v1, v2 = nv.GetVal(a), 1.0
+		if !math.IsNaN(v1) && math.Abs(v1-v2) > Precision {
+			t.Fatal("Failed normalization var")
+		}
+
+	}
+
+}

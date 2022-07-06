@@ -15,7 +15,7 @@ type Dataset struct {
 	natt int
 }
 
-// GetNatt provides an uppe bound for the number of attributes in Instances.
+// GetNatt provides an upper bound for the number of attributes in Instances.
 // it is ok to query a non allocated attribute, but you will get a NaN.
 func (ds *Dataset) GetNatt() int {
 	return ds.natt
@@ -26,8 +26,8 @@ func (ds *Dataset) AddInstance(inst *Instance) int {
 
 	id := len(ds.data)
 	ds.data = append(ds.data, inst)
-	if ds.natt < inst.Natt() {
-		ds.natt = inst.Natt()
+	if ds.natt < inst.GetNatt() {
+		ds.natt = inst.GetNatt()
 	}
 	return id
 }
@@ -138,4 +138,62 @@ func (ds *Dataset) SampleSplit(percent float64) (*Dataset, *Dataset) {
 		return rd.Float64() < percent
 	})
 	return d1, d2
+}
+
+// MeanVar returns 3 Instances that respectiveley contain, per attributes,  the mean of the defined attributes, the variance, and the count.
+// Only defined attributes are taken into account, independently.
+// If no attribute defined, count is 0, mean and var are NaN.
+// If only one attribute value is defined, count is 1, mean is the value, var is NaN.
+func (ds *Dataset) MeanVarCount() (*Instance, *Instance, *Instance) {
+	ma, va, ca := make([]float64, ds.GetNatt()), make([]float64, ds.GetNatt()), make([]float64, ds.GetNatt())
+	for _, in := range ds.GetInstances() {
+		for a := range in.data {
+			v := in.GetVal(a)
+			if !math.IsNaN(v) {
+				ma[a] = ma[a] + v
+				va[a] = va[a] + v*v
+				ca[a] = ca[a] + 1.0
+			} // ignore NaNs
+		}
+	}
+
+	for a := 0; a < ds.GetNatt(); a++ {
+		switch ca[a] {
+		case 0:
+			ma[a], va[a] = math.NaN(), math.NaN()
+		case 1:
+			va[a] = math.NaN()
+			ma[a] = ma[a] / ca[a]
+		default:
+			ma[a] = ma[a] / ca[a]
+			va[a] = (va[a]/ca[a] - ma[a]*ma[a]) * ca[a] / (ca[a] - 1)
+		}
+	}
+	return NewInstance(0, ma), NewInstance(0, va), NewInstance(0, ca)
+}
+
+// Normalize creates a new Dataset where instances attributes have a zero-mean and unit-variance.
+func (ds *Dataset) Normalize() *Dataset {
+	d := NewDataset()
+	m, v, c := ds.MeanVarCount()
+	for _, ins := range ds.GetInstances() {
+		newi := make([]float64, ins.GetNatt())
+		for i := range newi {
+			n := c.GetVal(i)
+			if math.IsNaN(ins.GetVal(i)) {
+				newi[i] = math.NaN()
+				continue
+			}
+			switch n {
+			case 0:
+				newi[i] = math.NaN()
+			case 1:
+				newi[i] = 0 // a single value, normalized is always 0.
+			default:
+				newi[i] = (ins.GetVal(i) - m.GetVal(i)) / math.Sqrt(v.GetVal(i))
+			}
+		}
+		d.AddInstance(NewInstance(0, newi))
+	}
+	return d
 }

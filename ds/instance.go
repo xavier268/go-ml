@@ -19,7 +19,7 @@ func (is *Instance) GetClass() int {
 	return is.class
 }
 
-func (is *Instance) Natt() int {
+func (is *Instance) GetNatt() int {
 	return len(is.data)
 }
 
@@ -84,9 +84,9 @@ func (is *Instance) D2(b *Instance) float64 {
 }
 
 func (is Instance) Equal(b *Instance) bool {
-	natt := b.Natt()
-	if is.Natt() > natt {
-		natt = is.Natt()
+	natt := b.GetNatt()
+	if is.GetNatt() > natt {
+		natt = is.GetNatt()
 	}
 	// now n2 is  max (n1, n2)
 	for i := 0; i < natt; i++ {
@@ -103,9 +103,9 @@ func (is Instance) Equal(b *Instance) bool {
 
 // Less is is < b. By convention, NaN < ...
 func (is Instance) Less(b Instance) bool {
-	natt := b.Natt()
-	if is.Natt() > natt {
-		natt = is.Natt()
+	natt := b.GetNatt()
+	if is.GetNatt() > natt {
+		natt = is.GetNatt()
 	}
 	// now n2 is  max (n1, n2)
 	for i := 0; i < natt; i++ {
@@ -125,9 +125,9 @@ func (is *Instance) Almost(b *Instance) bool {
 	if b == nil {
 		return false
 	}
-	natt := b.Natt()
-	if is.Natt() > natt {
-		natt = is.Natt()
+	natt := b.GetNatt()
+	if is.GetNatt() > natt {
+		natt = is.GetNatt()
 	}
 	// now n2 is  max (n1, n2)
 	for i := 0; i < natt; i++ {

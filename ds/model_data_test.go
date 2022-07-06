@@ -16,4 +16,5 @@ var ti = []*Instance{
 	{class: 88, data: []float64{math.NaN(), 8.88}},
 	{class: 99, data: []float64{math.NaN(), 9., .99}},
 	{class: 100, data: []float64{1.5, math.NaN(), 10}},
+	{class: 100, data: []float64{1.5, math.NaN(), 10, 12}},
 }
