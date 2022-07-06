@@ -93,7 +93,5 @@ func TestNormalizeVisual(t *testing.T) {
 		if !math.IsNaN(v1) && math.Abs(v1) > Precision && math.Abs(v1-v2) > Precision { // var, if it exists, should be 0 or 1
 			t.Fatal("Failed normalization var")
 		}
-
 	}
-
 }
